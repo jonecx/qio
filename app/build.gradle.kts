@@ -7,6 +7,7 @@ import Dependencies.junit
 import Dependencies.lifecycleRuntimeKtx
 import Dependencies.hiltAndroid
 import Dependencies.hiltCompiler
+import Dependencies.timberLogging
 
 plugins {
     id("com.android.application")
@@ -52,6 +53,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -68,6 +70,8 @@ dependencies {
     implementation(coreKtx)
     implementation(lifecycleRuntimeKtx)
     implementation(activityCompose)
+
+    implementation(timberLogging)
 
     implementation(hiltAndroid)
     kapt(hiltCompiler)

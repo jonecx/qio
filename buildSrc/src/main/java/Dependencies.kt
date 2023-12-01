@@ -9,4 +9,5 @@ object Dependencies {
     const val baristaCompose = "com.adevinta.android:barista-compose:${Versions.composeBarista}"
     const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hiltAndroidVersion}"
     const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.hiltCompilerVersion}"
+    const val timberLogging = "com.jakewharton.timber:timber:${Versions.timerLoggingVersion}"
 }

@@ -8,4 +8,5 @@ internal object Versions {
     const val activityComposeVersion = "1.8.1"
     const val hiltAndroidVersion = "2.44"
     const val hiltCompilerVersion = "2.44"
+    const val timerLoggingVersion = "5.0.1"
 }

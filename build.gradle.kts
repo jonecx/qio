@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.9.0" apply false
     id("io.gitlab.arturbosch.detekt") version "1.23.4" apply false
     id("com.diffplug.spotless") version "6.21.0" apply false
+    id("com.google.dagger.hilt.android") version "2.44" apply false
 }
 
 subprojects {

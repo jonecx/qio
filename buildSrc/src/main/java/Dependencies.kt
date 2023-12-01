@@ -7,4 +7,6 @@ object Dependencies {
     const val lifecycleRuntimeKtx = "androidx.lifecycle:lifecycle-runtime-ktx:${Versions.lifecycleRuntimeKtxVersion}"
     const val activityCompose = "androidx.activity:activity-compose:${Versions.activityComposeVersion}"
     const val baristaCompose = "com.adevinta.android:barista-compose:${Versions.composeBarista}"
+    const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hiltAndroidVersion}"
+    const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.hiltCompilerVersion}"
 }

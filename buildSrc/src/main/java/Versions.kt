@@ -6,4 +6,6 @@ internal object Versions {
     const val coreKtxVersion = "1.12.0"
     const val lifecycleRuntimeKtxVersion = "2.6.2"
     const val activityComposeVersion = "1.8.1"
+    const val hiltAndroidVersion = "2.44"
+    const val hiltCompilerVersion = "2.44"
 }

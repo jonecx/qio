@@ -5,12 +5,16 @@ import Dependencies.coreKtx
 import Dependencies.junitExtension
 import Dependencies.junit
 import Dependencies.lifecycleRuntimeKtx
+import Dependencies.hiltAndroid
+import Dependencies.hiltCompiler
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("io.gitlab.arturbosch.detekt")
     id("com.diffplug.spotless")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -65,6 +69,9 @@ dependencies {
     implementation(lifecycleRuntimeKtx)
     implementation(activityCompose)
 
+    implementation(hiltAndroid)
+    kapt(hiltCompiler)
+
 
     // compose ui
     implementation(platform(composeBom))
@@ -84,4 +91,9 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     testImplementation(junit)
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }

@@ -40,3 +40,4 @@ build/
 
 # Sandbox stuff
 _sandbox
+*.properties

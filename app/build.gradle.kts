@@ -16,7 +16,17 @@ plugins {
     id("com.diffplug.spotless")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlinx-serialization")
 }
+
+internal val oauthKeyFile = File(rootDir, "okeys.properties")
+internal val oauthKeys = Properties().apply {
+    load(FileInputStream(oauthKeyFile))
+}
+
+val clientId = oauthKeys.getProperty("CLIENT_ID", "")
+val clientSecret = oauthKeys.getProperty("CLIENT_SECRET", "")
+
 
 android {
     namespace = QioConfig.appId

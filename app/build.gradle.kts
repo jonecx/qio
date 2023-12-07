@@ -8,6 +8,8 @@ import Dependencies.lifecycleRuntimeKtx
 import Dependencies.hiltAndroid
 import Dependencies.hiltCompiler
 import Dependencies.timberLogging
+val kotlinVersion = "1.9.20"
+val kotlinCompilerExtVersion = "1.5.5"
 
 plugins {
     id("com.android.application")
@@ -66,7 +68,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = kotlinCompilerExtVersion
     }
     packaging {
         resources {
@@ -77,6 +79,7 @@ android {
 
 dependencies {
 
+    implementation(webView)
     implementation(coreKtx)
     implementation(lifecycleRuntimeKtx)
     implementation(activityCompose)
@@ -85,6 +88,13 @@ dependencies {
 
     implementation(hiltAndroid)
     kapt(hiltCompiler)
+
+    // ktor
+    implementation(ktorClientCore)
+    implementation(ktorClientContentNegotiation)
+    implementation(ktorSerializationKotlinJson)
+    implementation(ktorClientAndroid)
+    implementation(ktorClientLogging)
 
 
     // compose ui

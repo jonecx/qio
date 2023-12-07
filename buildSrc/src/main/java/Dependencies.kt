@@ -10,4 +10,10 @@ object Dependencies {
     const val hiltAndroid = "com.google.dagger:hilt-android:${Versions.hiltAndroidVersion}"
     const val hiltCompiler = "com.google.dagger:hilt-compiler:${Versions.hiltCompilerVersion}"
     const val timberLogging = "com.jakewharton.timber:timber:${Versions.timerLoggingVersion}"
+    const val ktorClientCore = "io.ktor:ktor-client-core:${Versions.ktorVersion}"
+    const val ktorClientContentNegotiation = "io.ktor:ktor-client-content-negotiation:${Versions.ktorVersion}"
+    const val ktorSerializationKotlinJson = "io.ktor:ktor-serialization-kotlinx-json:${Versions.ktorVersion}"
+    const val ktorClientAndroid = "io.ktor:ktor-client-android:${Versions.ktorVersion}"
+    const val ktorClientLogging = "io.ktor:ktor-client-logging:${Versions.ktorVersion}"
+    const val webView = "androidx.browser:browser:${Versions.webViewVersion}"
 }

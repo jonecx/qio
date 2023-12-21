@@ -7,7 +7,34 @@ import Dependencies.junit
 import Dependencies.lifecycleRuntimeKtx
 import Dependencies.hiltAndroid
 import Dependencies.hiltCompiler
+import Dependencies.ktorClientAndroid
+import Dependencies.ktorClientContentNegotiation
+import Dependencies.ktorClientCore
+import Dependencies.ktorClientLogging
+import Dependencies.ktorSerializationKotlinJson
 import Dependencies.timberLogging
+import Dependencies.webView
+import Dependencies.securityCrypto
+import java.io.File
+import java.io.FileInputStream
+import java.util.Properties
+
+internal val oauthKeyFile = File(rootDir, "okeys.properties")
+internal val oauthKeys = Properties().apply {
+    load(FileInputStream(oauthKeyFile))
+}
+
+val baseUrl: String = oauthKeys.getProperty("BASE_URL", "")
+val clientId: String = oauthKeys.getProperty("CLIENT_ID", "")
+var clientSecret: String = oauthKeys.getProperty("CLIENT_SECRET", "")
+val grantType: String = oauthKeys.getProperty("GRANT_TYPE", "")
+var scope: String = oauthKeys.getProperty("SCOPE", "")
+val responseType: String = oauthKeys.getProperty("RESPONSE_TYPE", "")
+val redirectUri: String = oauthKeys.getProperty("REDIRECT_URL", "")
+var redirectUriWithCode: String = oauthKeys.getProperty("REDIRECT_URL_WITH_CODE", "")
+val authorizeUrl: String = oauthKeys.getProperty("AUTHORIZE_URL", "")
+var authorizationCodeGrantUrl: String = oauthKeys.getProperty("AUTHORIZATION_CODE_GRANT_URL", "")
+
 val kotlinVersion = "1.9.20"
 val kotlinCompilerExtVersion = "1.5.5"
 
@@ -16,19 +43,15 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("io.gitlab.arturbosch.detekt")
     id("com.diffplug.spotless")
-    kotlin("kapt")
     id("com.google.dagger.hilt.android")
     id("kotlinx-serialization")
+    kotlin("kapt")
 }
 
-internal val oauthKeyFile = File(rootDir, "okeys.properties")
-internal val oauthKeys = Properties().apply {
-    load(FileInputStream(oauthKeyFile))
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
-
-val clientId = oauthKeys.getProperty("CLIENT_ID", "")
-val clientSecret = oauthKeys.getProperty("CLIENT_SECRET", "")
-
 
 android {
     namespace = QioConfig.appId
@@ -48,6 +71,19 @@ android {
     }
 
     buildTypes {
+        getByName("debug") {
+            buildConfigField("String", "BASE_URL", baseUrl)
+            buildConfigField("String", "CLIENT_ID", clientId)
+            buildConfigField("String", "CLIENT_SECRET", clientSecret)
+            buildConfigField("String","GRANT_TYPE", grantType)
+            buildConfigField("String","SCOPE", scope)
+            buildConfigField("String","RESPONSE_TYPE", responseType)
+            buildConfigField("String","REDIRECT_URI", redirectUri)
+            buildConfigField("String","REDIRECT_URL_WITH_CODE", redirectUriWithCode)
+            buildConfigField("String","AUTHORIZE_URL", authorizeUrl)
+            buildConfigField("String","AUTHORIZATION_CODE_GRANT_URL", authorizationCodeGrantUrl)
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -119,7 +155,15 @@ dependencies {
     testImplementation(junit)
 }
 
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
+tasks.create("validate") {
+    dependsOn("spotlessApply")
+    doLast {
+        if (clientId.isBlank() || clientSecret.isBlank()) {
+            throw GradleException("Client ID and Secret must not be blank")
+        }
+    }
+}
+
+tasks.withType<Test> {
+    // Configure your test tasks if necessary
 }

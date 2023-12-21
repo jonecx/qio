@@ -86,6 +86,8 @@ dependencies {
 
     implementation(timberLogging)
 
+    implementation(securityCrypto)
+
     implementation(hiltAndroid)
     kapt(hiltCompiler)
 

@@ -11,4 +11,5 @@ internal object Versions {
     const val timerLoggingVersion = "5.0.1"
     const val ktorVersion = "2.3.0"
     const val webViewVersion = "1.7.0"
+    const val securityCryptoVersion = "1.1.0-alpha06"
 }

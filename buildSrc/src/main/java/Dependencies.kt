@@ -16,4 +16,5 @@ object Dependencies {
     const val ktorClientAndroid = "io.ktor:ktor-client-android:${Versions.ktorVersion}"
     const val ktorClientLogging = "io.ktor:ktor-client-logging:${Versions.ktorVersion}"
     const val webView = "androidx.browser:browser:${Versions.webViewVersion}"
+    const val securityCrypto = "androidx.security:security-crypto:${Versions.securityCryptoVersion}"
 }

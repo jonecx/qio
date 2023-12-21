@@ -5,8 +5,6 @@ import com.jonecx.qio.BuildConfig
 import com.jonecx.qio.utils.OauthUtils.Companion.AUTHORIZATION_CODE_PARAM
 import io.ktor.client.request.forms.FormDataContent
 import io.ktor.http.Parameters
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 
 class OauthUtils {
     companion object {
@@ -40,4 +38,3 @@ fun WebResourceRequest.extractAuthorizationCode(): String {
         false -> ""
     }
 }
-

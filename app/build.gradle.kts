@@ -15,6 +15,7 @@ import Dependencies.ktorSerializationKotlinJson
 import Dependencies.timberLogging
 import Dependencies.webView
 import Dependencies.securityCrypto
+import Dependencies.splashScreen
 import java.io.File
 import java.io.FileInputStream
 import java.util.Properties
@@ -134,6 +135,7 @@ dependencies {
     implementation(ktorClientAndroid)
     implementation(ktorClientLogging)
 
+    implementation(splashScreen)
 
     // compose ui
     implementation(platform(composeBom))

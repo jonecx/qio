@@ -12,4 +12,5 @@ internal object Versions {
     const val ktorVersion = "2.3.0"
     const val webViewVersion = "1.7.0"
     const val securityCryptoVersion = "1.1.0-alpha06"
+    const val splashScreenVersion = "1.0.1"
 }

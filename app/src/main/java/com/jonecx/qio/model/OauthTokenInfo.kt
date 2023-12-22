@@ -11,3 +11,7 @@ data class OauthTokenInfo(
     val scope: String,
     @SerialName("id_token") val idToken: Boolean,
 )
+
+fun OauthTokenInfo.isValid(): Boolean {
+    return accessToken.isNotBlank() && tokenType == "bearer" && expiresIn != 0
+}

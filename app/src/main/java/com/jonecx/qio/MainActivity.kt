@@ -28,6 +28,10 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.jonecx.qio.network.ApiResult
+import com.jonecx.qio.network.ApiResult.Error
+import com.jonecx.qio.network.ApiResult.Loading
+import com.jonecx.qio.network.ApiResult.Success
 import com.jonecx.qio.ui.theme.QioTheme
 import com.jonecx.qio.ui.vm.AppSessionViewModel
 import com.jonecx.qio.ui.vm.LoginViewModel
@@ -37,8 +41,7 @@ import com.jonecx.qio.ui.vm.SessionState.SessionStateValue
 import com.jonecx.qio.utils.OauthUtils.Companion.authorizeRequestUrl
 import com.jonecx.qio.utils.extractAuthorizationCode
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -54,14 +57,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         var sessionState: SessionState by mutableStateOf(SessionStateLoading)
+        var authenticationState: ApiResult<Boolean> by mutableStateOf(Loading())
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 appSessionViewModel.sessionState
-                    .onEach {
-                        sessionState = it
+                    .zip(loginViewModel.authorizationState) { currentSessionState, currentAuthenticationState ->
+                        sessionState = currentSessionState
+                        authenticationState = currentAuthenticationState
                     }
-                    .collect()
             }
         }
 
@@ -83,11 +87,29 @@ class MainActivity : ComponentActivity() {
                     val isAuthenticated = (sessionState as SessionStateValue).isUserAuthenticated
                     when (isAuthenticated) {
                         true -> AuthenticatedScreen()
-                        false -> AuthorizationScreen(loginViewModel::getAccessToken)
+                        false -> {
+                            when (authenticationState) {
+                                is Error -> ErrorScreen()
+                                is Loading -> AuthorizationScreen(loginViewModel::getAccessToken)
+                                is Success -> AuthenticatedScreen() // establish qioApp here
+                            }
+                        }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ErrorScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Red),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(":( failure")
     }
 }
 
@@ -119,14 +141,14 @@ fun AuthorizationScreen(authorizeAccess: (String) -> Unit) {
                 override fun shouldOverrideUrlLoading(webView: WebView, request: WebResourceRequest): Boolean {
                     val authorizationCode = request.extractAuthorizationCode()
                     if (authorizationCode.isNotBlank()) {
-                        Timber.i("Authorization code retrieved")
+                        Timber.d("Authorization code retrieved")
                         authorizeAccess(authorizationCode)
                         return true
                     }
                     return false
                 }
             }
-            Timber.i("Start authorization steps")
+            Timber.d("Start authorization steps")
             loadUrl(authorizeRequestUrl)
         }
     }, update = {

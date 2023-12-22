@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.jonecx.qio.di.Dispatcher
 import com.jonecx.qio.di.QioDispatchers
 import com.jonecx.qio.network.ApiResult
-import com.jonecx.qio.network.ApiResult.Initialized
+import com.jonecx.qio.network.ApiResult.Loading
 import com.jonecx.qio.network.AuthorizeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,11 +22,11 @@ class LoginViewModel @Inject constructor(
     private val authorizeUseCase: AuthorizeUseCase,
 ) : ViewModel() {
 
-    private val _authorizationState = MutableStateFlow<ApiResult<Boolean>>(Initialized())
+    private val _authorizationState = MutableStateFlow<ApiResult<Boolean>>(Loading())
     val authorizationState = _authorizationState.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = Initialized(),
+        initialValue = Loading(),
     )
 
     fun getAccessToken(authorizationCode: String) {

@@ -28,20 +28,21 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.jonecx.qio.feature.appstate.AppSessionViewModel
+import com.jonecx.qio.feature.appstate.SessionState
+import com.jonecx.qio.feature.appstate.SessionState.SessionStateLoading
+import com.jonecx.qio.feature.appstate.SessionState.SessionStateValue
+import com.jonecx.qio.feature.authentication.LoginViewModel
+import com.jonecx.qio.feature.authentication.OauthUtils.Companion.authorizeRequestUrl
+import com.jonecx.qio.feature.authentication.extractAuthorizationCode
 import com.jonecx.qio.network.ApiResult
 import com.jonecx.qio.network.ApiResult.Error
 import com.jonecx.qio.network.ApiResult.Loading
 import com.jonecx.qio.network.ApiResult.Success
 import com.jonecx.qio.ui.theme.QioTheme
-import com.jonecx.qio.ui.vm.AppSessionViewModel
-import com.jonecx.qio.ui.vm.LoginViewModel
-import com.jonecx.qio.ui.vm.SessionState
-import com.jonecx.qio.ui.vm.SessionState.SessionStateLoading
-import com.jonecx.qio.ui.vm.SessionState.SessionStateValue
-import com.jonecx.qio.utils.OauthUtils.Companion.authorizeRequestUrl
-import com.jonecx.qio.utils.extractAuthorizationCode
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.zip
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -61,11 +62,10 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                appSessionViewModel.sessionState
-                    .zip(loginViewModel.authorizationState) { currentSessionState, currentAuthenticationState ->
-                        sessionState = currentSessionState
-                        authenticationState = currentAuthenticationState
-                    }
+                combine(appSessionViewModel.sessionState, loginViewModel.authorizationState) { currentSessionState, currentAuthorizationState ->
+                    sessionState = currentSessionState
+                    authenticationState = currentAuthorizationState
+                }.collect()
             }
         }
 
@@ -84,14 +84,22 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
-                    val isAuthenticated = (sessionState as SessionStateValue).isUserAuthenticated
-                    when (isAuthenticated) {
-                        true -> AuthenticatedScreen()
-                        false -> {
-                            when (authenticationState) {
-                                is Error -> ErrorScreen()
-                                is Loading -> AuthorizationScreen(loginViewModel::getAccessToken)
-                                is Success -> AuthenticatedScreen() // establish qioApp here
+                    when (sessionState) {
+                        SessionStateLoading -> {
+                            // NOOP
+                            // Splash screen is still on
+                        }
+                        is SessionStateValue -> {
+                            val isAuthenticated = (sessionState as SessionStateValue).isUserAuthenticated
+                            when (isAuthenticated) {
+                                true -> AuthenticatedScreen()
+                                false -> {
+                                    when (authenticationState) {
+                                        is Error -> ErrorScreen()
+                                        is Loading -> AuthorizationScreen(loginViewModel::getAccessToken)
+                                        is Success -> AuthenticatedScreen() // establish qioApp here
+                                    }
+                                }
                             }
                         }
                     }

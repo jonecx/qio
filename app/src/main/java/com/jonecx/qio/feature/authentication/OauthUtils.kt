@@ -1,8 +1,10 @@
-package com.jonecx.qio.utils
+package com.jonecx.qio.feature.authentication
 
 import android.webkit.WebResourceRequest
 import com.jonecx.qio.BuildConfig
-import com.jonecx.qio.utils.OauthUtils.Companion.AUTHORIZATION_CODE_PARAM
+import com.jonecx.qio.feature.authentication.OauthUtils.Companion.AUTHORIZATION_CODE_PARAM
+import com.jonecx.qio.utils.getRandomString
+import com.jonecx.qio.utils.orBlank
 import io.ktor.client.request.forms.FormDataContent
 import io.ktor.http.Parameters
 

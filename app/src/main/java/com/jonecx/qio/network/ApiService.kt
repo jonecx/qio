@@ -1,12 +1,11 @@
 package com.jonecx.qio.network
 
 import android.content.SharedPreferences
-import android.provider.Settings.Secure.putString
 import com.jonecx.qio.BuildConfig
+import com.jonecx.qio.feature.authentication.OauthUtils
 import com.jonecx.qio.network.ApiResult.Error
 import com.jonecx.qio.network.ApiResult.Loading
 import com.jonecx.qio.network.ApiResult.Success
-import com.jonecx.qio.utils.OauthUtils
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody

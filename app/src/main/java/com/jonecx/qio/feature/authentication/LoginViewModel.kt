@@ -1,4 +1,4 @@
-package com.jonecx.qio.ui.vm
+package com.jonecx.qio.feature.authentication
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

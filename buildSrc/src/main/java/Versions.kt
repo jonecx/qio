@@ -13,4 +13,7 @@ internal object Versions {
     const val webViewVersion = "1.7.0"
     const val securityCryptoVersion = "1.1.0-alpha06"
     const val splashScreenVersion = "1.0.1"
+    const val dataStoreVersion = "1.0.0"
+    const val protobufJavaLiteVersion = "3.24.4"
+    const val protobufKotlinVersion = "3.24.4"
 }

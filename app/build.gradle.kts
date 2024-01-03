@@ -2,6 +2,7 @@ import Dependencies.activityCompose
 import Dependencies.baristaCompose
 import Dependencies.composeBom
 import Dependencies.coreKtx
+import Dependencies.dataStore
 import Dependencies.junitExtension
 import Dependencies.junit
 import Dependencies.lifecycleRuntimeKtx
@@ -12,6 +13,8 @@ import Dependencies.ktorClientContentNegotiation
 import Dependencies.ktorClientCore
 import Dependencies.ktorClientLogging
 import Dependencies.ktorSerializationKotlinJson
+import Dependencies.protobufJavaLite
+import Dependencies.protobufKoltinLite
 import Dependencies.timberLogging
 import Dependencies.webView
 import Dependencies.securityCrypto
@@ -45,6 +48,7 @@ plugins {
     id("io.gitlab.arturbosch.detekt")
     id("com.diffplug.spotless")
     id("com.google.dagger.hilt.android")
+    id("com.google.protobuf")
     id("kotlinx-serialization")
     kotlin("kapt")
 }
@@ -52,6 +56,25 @@ plugins {
 // Allow references to generated code
 kapt {
     correctErrorTypes = true
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:3.24.1"
+    }
+
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                register("java") {
+                    option("lite")
+                }
+                register("kotlin") {
+                    option("lite")
+                }
+            }
+        }
+    }
 }
 
 android {
@@ -136,6 +159,11 @@ dependencies {
     implementation(ktorClientLogging)
 
     implementation(splashScreen)
+
+    // protobuf
+    implementation(dataStore)
+    implementation(protobufJavaLite)
+    implementation(protobufKoltinLite)
 
     // compose ui
     implementation(platform(composeBom))

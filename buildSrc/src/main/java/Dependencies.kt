@@ -18,4 +18,7 @@ object Dependencies {
     const val webView = "androidx.browser:browser:${Versions.webViewVersion}"
     const val securityCrypto = "androidx.security:security-crypto:${Versions.securityCryptoVersion}"
     const val splashScreen = "androidx.core:core-splashscreen:${Versions.splashScreenVersion}"
+    const val dataStore = "androidx.datastore:datastore:${Versions.dataStoreVersion}"
+    const val protobufJavaLite = "com.google.protobuf:protobuf-javalite:${Versions.protobufJavaLiteVersion}"
+    const val protobufKoltinLite = "com.google.protobuf:protobuf-kotlin-lite:${Versions.protobufKotlinVersion}"
 }

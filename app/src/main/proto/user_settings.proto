@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "app_theme_config.proto";
+
+option java_package = "com.jonecx.qio.settings.proto";
+option java_multiple_files = true;
+
+message UserSettings {
+  ThemeConfig them_config = 1;
+  bool is_use_dynamic_color = 2;
+}

@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Qio"
+rootProject.name = "qio"
 include(":app")
  

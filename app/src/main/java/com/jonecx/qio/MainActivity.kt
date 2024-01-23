@@ -79,8 +79,7 @@ class MainActivity : ComponentActivity() {
                             // Splash screen is still on
                         }
                         is SessionStateValue -> {
-                            val isAuthenticated = (sessionState as SessionStateValue).isUserAuthenticated
-                            when (isAuthenticated) {
+                            when ((sessionState as SessionStateValue).isUserAuthenticated) {
                                 true -> AuthenticatedScreen()
                                 false -> {
                                     when (authenticationState) {

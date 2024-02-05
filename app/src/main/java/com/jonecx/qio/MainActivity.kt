@@ -89,7 +89,10 @@ class MainActivity : ComponentActivity() {
             }
 
             CompositionLocalProvider {
-                QioTheme(darkTheme = isUseDarkTheme) {
+                QioTheme(
+                    darkTheme = isUseDarkTheme,
+                    dynamicColor = isUseDynamicColor(sessionState),
+                ) {
                     // A surface container using the 'background' color from the theme
                     Surface(
                         modifier = Modifier.fillMaxSize(),
@@ -134,4 +137,10 @@ private fun isUseDarkTheme(sessionState: SessionState) = when (sessionState) {
         null,
         -> isSystemInDarkTheme()
     }
+}
+
+@Composable
+private fun isUseDynamicColor(sessionState: SessionState) = when (sessionState) {
+    SessionStateLoading -> false
+    is SessionStateValue -> sessionState.userSettings?.useDynamicColor ?: false
 }

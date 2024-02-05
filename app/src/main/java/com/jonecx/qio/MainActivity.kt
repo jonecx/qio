@@ -3,12 +3,17 @@ package com.jonecx.qio
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -29,6 +34,7 @@ import com.jonecx.qio.network.ApiResult
 import com.jonecx.qio.network.ApiResult.Error
 import com.jonecx.qio.network.ApiResult.Loading
 import com.jonecx.qio.network.ApiResult.Success
+import com.jonecx.qio.settings.proto.ThemeConfig
 import com.jonecx.qio.ui.theme.QioTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -65,27 +71,44 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        enableEdgeToEdge()
         setContent {
-            QioTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background,
-                ) {
-                    when (sessionState) {
-                        SessionStateLoading -> {
-                            // NOOP
-                            // Splash screen is still on
-                        }
-                        is SessionStateValue -> {
-                            when ((sessionState as SessionStateValue).isUserAuthenticated) {
-                                true -> AuthenticatedScreen()
-                                false -> {
-                                    when (authenticationState) {
-                                        is Error -> ErrorScreen()
-                                        is Loading -> AuthorizationScreen(loginViewModel::getAccessToken)
-                                        is Success -> AuthenticatedScreen() // establish qioApp here
+            val isUseDarkTheme = isUseDarkTheme(sessionState = sessionState)
+
+            DisposableEffect(key1 = isUseDarkTheme) {
+                enableEdgeToEdge(
+                    statusBarStyle = SystemBarStyle.auto(
+                        android.graphics.Color.TRANSPARENT,
+                        android.graphics.Color.TRANSPARENT,
+                    ) { isUseDarkTheme },
+                    navigationBarStyle = SystemBarStyle.auto(
+                        lightScrim,
+                        darkScrim,
+                    ),
+                )
+                onDispose { }
+            }
+
+            CompositionLocalProvider {
+                QioTheme(darkTheme = isUseDarkTheme) {
+                    // A surface container using the 'background' color from the theme
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background,
+                    ) {
+                        when (sessionState) {
+                            SessionStateLoading -> {
+                                // NOOP
+                                // Splash screen is still on
+                            }
+                            is SessionStateValue -> {
+                                when ((sessionState as SessionStateValue).isUserAuthenticated) {
+                                    true -> AuthenticatedScreen()
+                                    false -> {
+                                        when (authenticationState) {
+                                            is Error -> ErrorScreen()
+                                            is Loading -> AuthorizationScreen(loginViewModel::getAccessToken)
+                                            is Success -> AuthenticatedScreen() // establish qioApp here
+                                        }
                                     }
                                 }
                             }
@@ -94,5 +117,21 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+}
+
+private val lightScrim = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
+private val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
+
+@Composable
+private fun isUseDarkTheme(sessionState: SessionState) = when (sessionState) {
+    SessionStateLoading -> false
+    is SessionStateValue -> when (sessionState.userSettings?.darkThemeConfig) {
+        ThemeConfig.DARK -> true
+        ThemeConfig.LIGHT -> false
+        ThemeConfig.FOLLOW_SYSTEM,
+        ThemeConfig.UNRECOGNIZED,
+        null,
+        -> isSystemInDarkTheme()
     }
 }

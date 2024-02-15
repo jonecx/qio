@@ -16,4 +16,8 @@ internal object Versions {
     const val dataStoreVersion = "1.0.0"
     const val protobufJavaLiteVersion = "3.24.4"
     const val protobufKotlinVersion = "3.24.4"
+    const val coreNavigationVersion = "2.7.6"
+    const val tracingVersion = "1.2.0"
+    const val metricsPerformanceVersion = "1.0.0-beta01"
+    const val lifecycleRuntimeComposeVersion = "2.7.0"
 }

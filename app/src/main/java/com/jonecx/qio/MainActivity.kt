@@ -11,6 +11,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -26,7 +28,6 @@ import com.jonecx.qio.feature.appstate.AppSessionViewModel
 import com.jonecx.qio.feature.appstate.SessionState
 import com.jonecx.qio.feature.appstate.SessionState.SessionStateLoading
 import com.jonecx.qio.feature.appstate.SessionState.SessionStateValue
-import com.jonecx.qio.feature.authentication.AuthenticatedScreen
 import com.jonecx.qio.feature.authentication.AuthorizationScreen
 import com.jonecx.qio.feature.authentication.ErrorScreen
 import com.jonecx.qio.feature.authentication.LoginViewModel
@@ -35,18 +36,25 @@ import com.jonecx.qio.network.ApiResult.Error
 import com.jonecx.qio.network.ApiResult.Loading
 import com.jonecx.qio.network.ApiResult.Success
 import com.jonecx.qio.settings.proto.ThemeConfig
+import com.jonecx.qio.ui.QioApp
 import com.jonecx.qio.ui.theme.QioTheme
+import com.jonecx.qio.utils.internet.InternetConnectionMonitor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    @Inject
+    lateinit var internetConnectionMonitor: InternetConnectionMonitor
+
     private val appSessionViewModel: AppSessionViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels()
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @SuppressLint("FlowOperatorInvokedInComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
@@ -89,32 +97,29 @@ class MainActivity : ComponentActivity() {
             }
 
             CompositionLocalProvider {
-                QioTheme(
-                    darkTheme = isUseDarkTheme,
-                    dynamicColor = isUseDynamicColor(sessionState),
-                ) {
-                    // A surface container using the 'background' color from the theme
+                QioTheme(darkTheme = isUseDarkTheme) {
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background,
                     ) {
-                        when (sessionState) {
-                            SessionStateLoading -> {
-                                // NOOP
-                                // Splash screen is still on
-                            }
+                        val needsOnBoarding = when (sessionState) {
+                            SessionStateLoading -> { /* NOOP */ }
                             is SessionStateValue -> {
-                                when ((sessionState as SessionStateValue).isUserAuthenticated) {
-                                    true -> AuthenticatedScreen()
-                                    false -> {
-                                        when (authenticationState) {
-                                            is Error -> ErrorScreen()
-                                            is Loading -> AuthorizationScreen(loginViewModel::getAccessToken)
-                                            is Success -> AuthenticatedScreen() // establish qioApp here
-                                        }
-                                    }
+                                when {
+                                    (sessionState as SessionStateValue).isUserAuthenticated || authenticationState is Success -> null
+                                    authenticationState is Error -> ErrorScreen()
+                                    authenticationState is Loading -> AuthorizationScreen(
+                                        loginViewModel::getAccessToken,
+                                    )
+                                    else -> { /* NOOP */ }
                                 }
                             }
+                        }
+                        if (needsOnBoarding == null) {
+                            QioApp(
+                                windowSizeClass = calculateWindowSizeClass(this),
+                                networkMonitor = internetConnectionMonitor,
+                            )
                         }
                     }
                 }

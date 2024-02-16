@@ -2,6 +2,7 @@ import Dependencies.activityCompose
 import Dependencies.baristaCompose
 import Dependencies.composeBom
 import Dependencies.coreKtx
+import Dependencies.coreNavigation
 import Dependencies.dataStore
 import Dependencies.junitExtension
 import Dependencies.junit
@@ -13,12 +14,15 @@ import Dependencies.ktorClientContentNegotiation
 import Dependencies.ktorClientCore
 import Dependencies.ktorClientLogging
 import Dependencies.ktorSerializationKotlinJson
+import Dependencies.lifecycleRuntimeCompose
+import Dependencies.metricsPerformance
 import Dependencies.protobufJavaLite
 import Dependencies.protobufKoltinLite
 import Dependencies.timberLogging
 import Dependencies.webView
 import Dependencies.securityCrypto
 import Dependencies.splashScreen
+import Dependencies.tracingProfile
 import java.io.File
 import java.io.FileInputStream
 import java.util.Properties
@@ -139,9 +143,12 @@ android {
 
 dependencies {
 
+    implementation(coreNavigation)
+
     implementation(webView)
     implementation(coreKtx)
     implementation(lifecycleRuntimeKtx)
+    implementation(lifecycleRuntimeCompose)
     implementation(activityCompose)
 
     implementation(timberLogging)
@@ -171,6 +178,11 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3-window-size-class")
+
+    // profiling
+    implementation(tracingProfile)
+    implementation(metricsPerformance)
 
     // AndroidTest libs
     androidTestImplementation(junitExtension)

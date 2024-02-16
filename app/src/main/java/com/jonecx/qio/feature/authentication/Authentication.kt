@@ -8,7 +8,6 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -61,18 +60,6 @@ fun ErrorScreen() {
     }
 }
 
-@Composable
-fun AuthenticatedScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text("Authenticated")
-    }
-}
-
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO, name = "Light theme")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark theme")
 annotation class ThemePreviews
@@ -81,10 +68,4 @@ annotation class ThemePreviews
 @Composable
 fun ErrorScreenPreview() {
     ErrorScreen()
-}
-
-@Preview
-@Composable
-fun AuthenticatedScreenPreview() {
-    AuthenticatedScreen()
 }

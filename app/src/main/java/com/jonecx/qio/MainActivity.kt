@@ -36,6 +36,7 @@ import com.jonecx.qio.network.ApiResult.Error
 import com.jonecx.qio.network.ApiResult.Loading
 import com.jonecx.qio.network.ApiResult.Success
 import com.jonecx.qio.settings.proto.ThemeConfig
+import com.jonecx.qio.settings.proto.userSettings
 import com.jonecx.qio.ui.QioApp
 import com.jonecx.qio.ui.theme.QioTheme
 import com.jonecx.qio.utils.internet.InternetConnectionMonitor

@@ -8,4 +8,5 @@ option java_multiple_files = true;
 message UserSettings {
   ThemeConfig them_config = 1;
   bool is_use_dynamic_color = 2;
+  bool is_show_nav_label = 3;
 }

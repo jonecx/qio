@@ -15,6 +15,7 @@ class SettingsDataStore @Inject constructor(
             SettingsData(
                 it.themConfig,
                 it.isUseDynamicColor,
+                it.isShowNavLabel,
             )
         }
 
@@ -30,6 +31,14 @@ class SettingsDataStore @Inject constructor(
         userSettings.updateData {
             it.copy {
                 this.isUseDynamicColor = isUseDynamicColor
+            }
+        }
+    }
+
+    suspend fun setIsShowNavLabel(isShowNavLabel: Boolean) {
+        userSettings.updateData {
+            it.copy {
+                this.isShowNavLabel = isShowNavLabel
             }
         }
     }

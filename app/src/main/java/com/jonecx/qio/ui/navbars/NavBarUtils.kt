@@ -23,7 +23,7 @@ object QioNavigationDefaults {
     fun navigationSelectedItemColor() = MaterialTheme.colorScheme.onPrimaryContainer
 
     @Composable
-    fun navigationIndicatorColor() = MaterialTheme.colorScheme.primaryContainer
+    fun navigationIndicatorColor() = MaterialTheme.colorScheme.surface
 }
 
 fun Modifier.notificationDot(): Modifier =

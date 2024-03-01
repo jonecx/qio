@@ -2,10 +2,10 @@ package com.jonecx.qio.feature.home
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.jonecx.qio.ui.QioCircularProgress
 
 @Composable
 internal fun HomeRoute() {
@@ -18,6 +18,6 @@ internal fun HomeScreen() {
         modifier = Modifier
             .fillMaxSize(),
     ) {
-        Text(text = "Authenticated home", modifier = Modifier.align(Alignment.Center))
+        QioCircularProgress(modifier = Modifier.align(Alignment.Center))
     }
 }

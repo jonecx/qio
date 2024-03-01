@@ -1,5 +1,6 @@
 import Dependencies.activityCompose
 import Dependencies.baristaCompose
+import Dependencies.collapsableToolbarItem
 import Dependencies.composeBom
 import Dependencies.coreKtx
 import Dependencies.coreNavigation
@@ -179,6 +180,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
+
+    // collapsable tool bar ui artifact
+    implementation(collapsableToolbarItem)
 
     // profiling
     implementation(tracingProfile)

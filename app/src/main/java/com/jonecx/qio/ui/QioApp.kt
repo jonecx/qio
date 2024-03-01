@@ -121,7 +121,9 @@ fun QioApp(
 
                     Column(Modifier.fillMaxSize()) {
                         qioAppState.currentTopLevelDestination?.let {
-                            QioTopAppBar()
+                            if (qioAppState.isShowBottomBar && it != TopLevelDestination.PROFILE) {
+                                QioTopAppBar()
+                            }
                         }
 
                         QioNavHost(appState = qioAppState, onShowSnackbar = { message, action ->

@@ -1,5 +1,7 @@
 package com.jonecx.qio.feature.profile.navigation
 
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -13,6 +15,16 @@ fun NavGraphBuilder.profileScreen() {
     composable(
         route = PROFILE_ROUTE,
     ) {
-        ProfileRoute()
+        val context = LocalContext.current
+        val onEdit = {
+            Toast.makeText(context, "Editing profile", Toast.LENGTH_SHORT).show()
+        }
+        val onShare = {
+            Toast.makeText(context, "Sharing profile", Toast.LENGTH_SHORT).show()
+        }
+        val onSettings = {
+            Toast.makeText(context, "Changing settings", Toast.LENGTH_SHORT).show()
+        }
+        ProfileRoute(onEdit, onShare, onSettings)
     }
 }

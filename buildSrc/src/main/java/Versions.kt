@@ -21,4 +21,5 @@ internal object Versions {
     const val metricsPerformanceVersion = "1.0.0-beta01"
     const val lifecycleRuntimeComposeVersion = "2.7.0"
     const val collapsableToolbarItemVersion = "2.3.5"
+    const val hiltNavigationComposeVersion= "1.0.0"
 }

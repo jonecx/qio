@@ -33,8 +33,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jonecx.qio.QioNavHost
 import com.jonecx.qio.R
-import com.jonecx.qio.navigation.QioNavHost
 import com.jonecx.qio.ui.navbars.QioBottomNavBar
 import com.jonecx.qio.ui.navbars.QioSideNavRail
 import com.jonecx.qio.ui.navbars.QioTopAppBar
@@ -121,7 +121,9 @@ fun QioApp(
 
                     Column(Modifier.fillMaxSize()) {
                         qioAppState.currentTopLevelDestination?.let {
-                            QioTopAppBar()
+                            if (qioAppState.isShowBottomBar && it != TopLevelDestination.PROFILE) {
+                                QioTopAppBar()
+                            }
                         }
 
                         QioNavHost(appState = qioAppState, onShowSnackbar = { message, action ->

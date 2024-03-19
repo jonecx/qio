@@ -1,5 +1,7 @@
-package com.jonecx.qio.network
+package com.jonecx.qio.feature.authentication
 
+import com.jonecx.qio.network.ApiResult
+import com.jonecx.qio.network.ApiService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

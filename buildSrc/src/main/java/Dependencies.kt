@@ -26,4 +26,6 @@ object Dependencies {
     const val protobufKoltinLite = "com.google.protobuf:protobuf-kotlin-lite:${Versions.protobufKotlinVersion}"
     const val tracingProfile = "androidx.tracing:tracing-ktx:${Versions.tracingVersion}"
     const val metricsPerformance = "androidx.metrics:metrics-performance:${Versions.metricsPerformanceVersion}"
+    const val collapsableToolbarItem = "me.onebone:toolbar-compose:${Versions.collapsableToolbarItemVersion}"
+    const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigationComposeVersion}"
 }

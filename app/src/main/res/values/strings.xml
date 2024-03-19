@@ -5,4 +5,7 @@
     <string name="nav_bar_profile">Profile</string>
     <string name="nav_bar_activity">Activity</string>
     <string name="no_internet_connection">⚠️ You aren’t connected to the internet</string>
+    <string name="edit_profile">Edit your profile</string>
+    <string name="share_profile">Share your profile</string>
+    <string name="settings">Settings</string>
 </resources>

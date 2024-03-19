@@ -1,4 +1,4 @@
-package com.jonecx.qio.navigation
+package com.jonecx.qio
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -8,6 +8,8 @@ import com.jonecx.qio.feature.home.HOME_ROUTE
 import com.jonecx.qio.feature.home.homeScreen
 import com.jonecx.qio.feature.profile.navigation.profileScreen
 import com.jonecx.qio.feature.search.navigation.searchScreen
+import com.jonecx.qio.feature.settings.navigation.navigateToSettings
+import com.jonecx.qio.feature.settings.navigation.settingsScreen
 import com.jonecx.qio.ui.QioAppState
 
 @Composable
@@ -26,6 +28,13 @@ fun QioNavHost(
         homeScreen()
         searchScreen()
         activityScreen()
-        profileScreen()
+        profileScreen(
+            onEdit = {},
+            onShare = {},
+            onSettings = navController::navigateToSettings,
+            nestedGraphs = {
+                settingsScreen()
+            },
+        )
     }
 }

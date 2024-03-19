@@ -6,7 +6,6 @@ import com.jonecx.qio.di.Dispatcher
 import com.jonecx.qio.di.QioDispatchers
 import com.jonecx.qio.network.ApiResult
 import com.jonecx.qio.network.ApiResult.Loading
-import com.jonecx.qio.network.AuthorizeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow

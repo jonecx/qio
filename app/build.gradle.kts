@@ -1,5 +1,6 @@
 import Dependencies.activityCompose
 import Dependencies.baristaCompose
+import Dependencies.collapsableToolbarItem
 import Dependencies.composeBom
 import Dependencies.coreKtx
 import Dependencies.coreNavigation
@@ -9,6 +10,7 @@ import Dependencies.junit
 import Dependencies.lifecycleRuntimeKtx
 import Dependencies.hiltAndroid
 import Dependencies.hiltCompiler
+import Dependencies.hiltNavigationCompose
 import Dependencies.ktorClientAndroid
 import Dependencies.ktorClientContentNegotiation
 import Dependencies.ktorClientCore
@@ -179,6 +181,12 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material3:material3-window-size-class")
+
+
+    implementation(hiltNavigationCompose)
+
+    // collapsable tool bar ui artifact
+    implementation(collapsableToolbarItem)
 
     // profiling
     implementation(tracingProfile)

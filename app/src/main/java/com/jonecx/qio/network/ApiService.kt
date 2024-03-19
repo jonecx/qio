@@ -3,10 +3,14 @@ package com.jonecx.qio.network
 import android.content.SharedPreferences
 import com.jonecx.qio.BuildConfig
 import com.jonecx.qio.feature.authentication.OauthUtils
+import com.jonecx.qio.feature.profile.ProfileInfoState
+import com.jonecx.qio.model.ProfileInfo
 import com.jonecx.qio.network.ApiResult.Error
 import com.jonecx.qio.network.ApiResult.Loading
 import com.jonecx.qio.network.ApiResult.Success
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
@@ -36,6 +40,16 @@ class ApiService @Inject constructor(private val encryptedStorage: SharedPrefere
         } catch (e: Exception) {
             Timber.e(e)
             emit(Error(e.message ?: "Authorization failed!"))
+        }
+    }
+
+    override fun getSelfProfile(): Flow<ProfileInfoState> = flow {
+        emit(ProfileInfoState.Loading)
+        try {
+            val profileInfo: ProfileInfo = httpClient.get("/v2/user/info").body()
+            emit(ProfileInfoState.Success(profileInfo))
+        } catch (e: java.lang.Exception) {
+            emit(ProfileInfoState.Error)
         }
     }
 }

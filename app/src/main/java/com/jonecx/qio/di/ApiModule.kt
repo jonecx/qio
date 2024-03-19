@@ -2,6 +2,7 @@ package com.jonecx.qio.di
 
 import android.content.SharedPreferences
 import com.jonecx.qio.BuildConfig
+import com.jonecx.qio.model.OauthTokenInfo
 import com.jonecx.qio.network.ApiService
 import dagger.Module
 import dagger.Provides
@@ -17,6 +18,7 @@ import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import javax.inject.Singleton
 
@@ -26,7 +28,7 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun providesHttpClient() = HttpClient(Android) {
+    fun providesHttpClient(encryptedStorage: SharedPreferences) = HttpClient(Android) {
         install(Logging) {
             level = ALL
         }
@@ -34,10 +36,21 @@ class ApiModule {
         install(DefaultRequest) {
             url(BuildConfig.BASE_URL)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
+            if (!headers.contains("No-Authentication")) {
+                val tokenInfo = encryptedStorage.getString("token", "")
+                if (tokenInfo?.isNotBlank() == true) {
+                    val oauthTokenInfo = Json.decodeFromString<OauthTokenInfo>(tokenInfo)
+                    header("Authorization", "Bearer ${oauthTokenInfo.accessToken}")
+                }
+            }
         }
 
         install(ContentNegotiation) {
-            json(Json)
+            json(
+                Json {
+                    ignoreUnknownKeys = true
+                },
+            )
         }
     }
 

@@ -30,6 +30,7 @@ import com.jonecx.qio.feature.appstate.AppState.AppStateLoading
 import com.jonecx.qio.feature.appstate.AppState.AppStateSuccess
 import com.jonecx.qio.feature.authentication.AuthorizationScreen
 import com.jonecx.qio.feature.authentication.ErrorScreen
+import com.jonecx.qio.feature.authentication.LoadingScreen
 import com.jonecx.qio.feature.authentication.LoginState
 import com.jonecx.qio.feature.authentication.LoginViewModel
 import com.jonecx.qio.settings.proto.ThemeConfig
@@ -98,6 +99,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         when (authenticationState) {
                             LoginState.LoginStateLoading -> loginViewModel.getCurrentAuthenticationState()
+                            LoginState.LoginStateRefreshing -> LoadingScreen()
                             LoginState.LoginStateError -> ErrorScreen()
                             LoginState.LoginStateSuccess -> QioApp(
                                 windowSizeClass = calculateWindowSizeClass(this),

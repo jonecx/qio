@@ -6,6 +6,7 @@ import com.jonecx.qio.di.Dispatcher
 import com.jonecx.qio.di.QioDispatchers
 import com.jonecx.qio.feature.authentication.LoginState.LoginStateError
 import com.jonecx.qio.feature.authentication.LoginState.LoginStateLoading
+import com.jonecx.qio.feature.authentication.LoginState.LoginStateRefreshing
 import com.jonecx.qio.feature.authentication.LoginState.LoginStateSuccess
 import com.jonecx.qio.feature.authentication.LoginState.LoginStateUnknown
 import com.jonecx.qio.model.OauthTokenInfo
@@ -60,7 +61,10 @@ class LoginViewModel @Inject constructor(
             authenticationStateUseCase().collectLatest {
                 when (it.isValid()) {
                     true -> when (it.isTokenExpired()) {
-                        true -> refreshToken(oauthTokenInfo = it)
+                        true -> {
+                            refreshToken(oauthTokenInfo = it)
+                            _authorizationState.value = LoginStateRefreshing
+                        }
                         false -> _authorizationState.value = LoginStateSuccess
                     }
                     false -> _authorizationState.value = LoginStateUnknown
@@ -73,13 +77,14 @@ class LoginViewModel @Inject constructor(
         when (result) {
             is Success -> _authorizationState.value = LoginStateSuccess
             is Error -> _authorizationState.value = LoginStateError
-            is Loading -> {} // by this time it will have been consumed alread
+            is Loading -> {} // we do not want this sent over to Ui components
         }
     }
 }
 
 sealed interface LoginState {
     data object LoginStateLoading : LoginState
+    data object LoginStateRefreshing : LoginState
     data object LoginStateError : LoginState
     data object LoginStateUnknown : LoginState
     data object LoginStateSuccess : LoginState

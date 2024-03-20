@@ -19,14 +19,15 @@ import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import timber.log.Timber
+import java.time.Instant
 import javax.inject.Inject
 
 class ApiService @Inject constructor(private val encryptedStorage: SharedPreferences, private val httpClient: HttpClient) : IApiService {
 
     override fun authorize(authorizationCode: String): Flow<ApiResult<OauthTokenInfo>> = flow {
-        emit(Loading())
         try {
             val url = BuildConfig.AUTHORIZATION_CODE_GRANT_URL
             val response = httpClient.post(url) {
@@ -42,7 +43,6 @@ class ApiService @Inject constructor(private val encryptedStorage: SharedPrefere
     }
 
     override fun refreshToken(oauthTokenInfo: OauthTokenInfo): Flow<ApiResult<OauthTokenInfo>> = flow {
-        emit(Loading())
         try {
             val url = BuildConfig.AUTHORIZATION_CODE_GRANT_URL
             val response = httpClient.post(url) {
@@ -70,17 +70,20 @@ class ApiService @Inject constructor(private val encryptedStorage: SharedPrefere
     private suspend fun handleAuthenticationResult(httpResponse: HttpResponse): ApiResult<OauthTokenInfo> {
         return if (httpResponse.status.value == 200) {
             val oauthInfoJson = httpResponse.bodyAsText()
-            saveAuthenticationState(oauthInfoJson)
-            val refreshedOauthTokenInfo = Json.decodeFromString<OauthTokenInfo>(oauthInfoJson)
+            val refreshedOauthTokenInfo = Json.decodeFromString<OauthTokenInfo>(oauthInfoJson).also {
+                // update the token expiry time
+                it.expiresIn += Instant.now().epochSecond
+            }
+            saveAuthenticationState(refreshedOauthTokenInfo)
             Success(refreshedOauthTokenInfo)
         } else {
             Error("Authorization failed!")
         }
     }
 
-    private fun saveAuthenticationState(oauthInfoJson: String) {
+    private fun saveAuthenticationState(oauthTokenInfo: OauthTokenInfo) {
         with(encryptedStorage.edit()) {
-            putString("token", oauthInfoJson)
+            putString("token", Json.encodeToString(oauthTokenInfo))
             apply()
         }
     }

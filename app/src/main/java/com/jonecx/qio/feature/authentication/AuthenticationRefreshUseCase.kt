@@ -6,6 +6,6 @@ import com.jonecx.qio.network.ApiService
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class AuthorizeUseCase @Inject constructor(private val apiService: ApiService) {
-    operator fun invoke(authorizationCode: String): Flow<ApiResult<OauthTokenInfo>> = apiService.authorize(authorizationCode)
+class AuthenticationRefreshUseCase @Inject constructor(private val apiService: ApiService) {
+    operator fun invoke(oauthTokenInfo: OauthTokenInfo): Flow<ApiResult<OauthTokenInfo>> = apiService.refreshToken(oauthTokenInfo)
 }

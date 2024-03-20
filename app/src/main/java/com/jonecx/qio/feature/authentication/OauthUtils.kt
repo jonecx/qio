@@ -3,6 +3,7 @@ package com.jonecx.qio.feature.authentication
 import android.webkit.WebResourceRequest
 import com.jonecx.qio.BuildConfig
 import com.jonecx.qio.feature.authentication.OauthUtils.Companion.AUTHORIZATION_CODE_PARAM
+import com.jonecx.qio.model.OauthTokenInfo
 import com.jonecx.qio.utils.getRandomString
 import com.jonecx.qio.utils.orBlank
 import io.ktor.client.request.forms.FormDataContent
@@ -22,13 +23,21 @@ class OauthUtils {
             append("&redirect_uri=").append(BuildConfig.REDIRECT_URI)
         }
 
-        fun getRequestTokenParams(authorizationCode: String) = FormDataContent(
+        fun getAuthorizationRequestTokenParams(authorizationCode: String) = FormDataContent(
             Parameters.build {
-                append("grant_type", BuildConfig.GRANT_TYPE)
+                append("grant_type", BuildConfig.GRANT_TYPE_AUTHORIZATION)
                 append(AUTHORIZATION_CODE_PARAM, authorizationCode)
                 append("client_id", BuildConfig.CLIENT_ID)
                 append("client_secret", BuildConfig.CLIENT_SECRET)
                 append("redirect_uri", BuildConfig.REDIRECT_URI)
+            },
+        )
+        fun getRefreshTokenRequestTokenParams(oauthTokenInfo: OauthTokenInfo) = FormDataContent(
+            Parameters.build {
+                append("grant_type", BuildConfig.GRANT_TYPE_REFRESH_TOKEN)
+                append("client_id", BuildConfig.CLIENT_ID)
+                append("client_secret", BuildConfig.CLIENT_SECRET)
+                append("refresh_token", oauthTokenInfo.refreshToken)
             },
         )
     }

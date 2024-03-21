@@ -3,6 +3,8 @@ package com.jonecx.qio.di
 import android.content.SharedPreferences
 import com.jonecx.qio.BuildConfig
 import com.jonecx.qio.model.OauthTokenInfo
+import com.jonecx.qio.model.isTokenExpired
+import com.jonecx.qio.model.isValid
 import com.jonecx.qio.network.ApiService
 import dagger.Module
 import dagger.Provides
@@ -40,7 +42,9 @@ class ApiModule {
                 val tokenInfo = encryptedStorage.getString("token", "")
                 if (tokenInfo?.isNotBlank() == true) {
                     val oauthTokenInfo = Json.decodeFromString<OauthTokenInfo>(tokenInfo)
-                    header("Authorization", "Bearer ${oauthTokenInfo.accessToken}")
+                    if (oauthTokenInfo.isValid() && !oauthTokenInfo.isTokenExpired()) {
+                        header("Authorization", "Bearer ${oauthTokenInfo.accessToken}")
+                    }
                 }
             }
         }

@@ -2,6 +2,8 @@ package com.jonecx.qio.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.time.Instant
 
 @Serializable
@@ -22,3 +24,5 @@ fun OauthTokenInfo.isTokenExpired(): Boolean {
     val currentTimeInSeconds = Instant.now().epochSecond
     return currentTimeInSeconds > expiresIn
 }
+
+fun OauthTokenInfo.serialize() = Json.encodeToString(this)

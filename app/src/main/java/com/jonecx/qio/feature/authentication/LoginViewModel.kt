@@ -6,9 +6,9 @@ import com.jonecx.qio.di.Dispatcher
 import com.jonecx.qio.di.QioDispatchers
 import com.jonecx.qio.feature.authentication.LoginState.LoginStateError
 import com.jonecx.qio.feature.authentication.LoginState.LoginStateLoading
+import com.jonecx.qio.feature.authentication.LoginState.LoginStateRefreshing
 import com.jonecx.qio.feature.authentication.LoginState.LoginStateSuccess
 import com.jonecx.qio.feature.authentication.LoginState.LoginStateUnknown
-import com.jonecx.qio.feature.authentication.LoginState.LoginStateRefreshing
 import com.jonecx.qio.model.OauthTokenInfo
 import com.jonecx.qio.model.isTokenExpired
 import com.jonecx.qio.model.isValid

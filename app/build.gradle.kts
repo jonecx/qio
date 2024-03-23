@@ -12,6 +12,7 @@ import Dependencies.hiltAndroid
 import Dependencies.hiltCompiler
 import Dependencies.hiltNavigationCompose
 import Dependencies.ktorClientAndroid
+import Dependencies.ktorClientAuth
 import Dependencies.ktorClientContentNegotiation
 import Dependencies.ktorClientCore
 import Dependencies.ktorClientLogging
@@ -170,6 +171,7 @@ dependencies {
     implementation(ktorSerializationKotlinJson)
     implementation(ktorClientAndroid)
     implementation(ktorClientLogging)
+    implementation(ktorClientAuth)
 
     implementation(splashScreen)
 

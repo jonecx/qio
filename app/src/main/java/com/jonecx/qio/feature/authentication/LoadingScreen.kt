@@ -7,6 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.jonecx.qio.ui.QioCircularProgress
 import com.jonecx.qio.ui.theme.QioBackground
@@ -17,6 +18,7 @@ import previews.DevicePreviewProfiles
 fun LoadingScreen() {
     Box(
         modifier = Modifier
+            .testTag("qio_loading_screen")
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center,

@@ -29,4 +29,7 @@ object Dependencies {
     const val metricsPerformance = "androidx.metrics:metrics-performance:${Versions.metricsPerformanceVersion}"
     const val collapsableToolbarItem = "me.onebone:toolbar-compose:${Versions.collapsableToolbarItemVersion}"
     const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:${Versions.hiltNavigationComposeVersion}"
+    const val uiAutomator = "androidx.test.uiautomator:uiautomator:${Versions.uiAutomatorVersion}"
+    const val espressoWeb = "androidx.test.espresso:espresso-web:${Versions.espressoVersion}"
+    const val espressoCore = "androidx.test.espresso:espresso-core:${Versions.espressoVersion}"
 }

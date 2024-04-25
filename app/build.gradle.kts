@@ -5,6 +5,8 @@ import Dependencies.composeBom
 import Dependencies.coreKtx
 import Dependencies.coreNavigation
 import Dependencies.dataStore
+import Dependencies.espressoCore
+import Dependencies.espressoWeb
 import Dependencies.junitExtension
 import Dependencies.junit
 import Dependencies.lifecycleRuntimeKtx
@@ -26,6 +28,7 @@ import Dependencies.webView
 import Dependencies.securityCrypto
 import Dependencies.splashScreen
 import Dependencies.tracingProfile
+import Dependencies.uiAutomator
 import java.io.File
 import java.io.FileInputStream
 import java.util.Properties
@@ -47,6 +50,8 @@ val refreshToken: String = oauthKeys.getProperty("REFRESH_TOKEN", "")
 var redirectUriWithCode: String = oauthKeys.getProperty("REDIRECT_URL_WITH_CODE", "")
 val authorizeUrl: String = oauthKeys.getProperty("AUTHORIZE_URL", "")
 var authorizationCodeGrantUrl: String = oauthKeys.getProperty("AUTHORIZATION_CODE_GRANT_URL", "")
+var testAccount: String = oauthKeys.getProperty("TEST_ACCOUNT", "")
+var testAccountPassword: String = oauthKeys.getProperty("TEST_ACCOUNT_PASSWORD", "")
 
 val kotlinVersion = "1.9.20"
 val kotlinCompilerExtVersion = "1.5.5"
@@ -117,6 +122,8 @@ android {
             buildConfigField("String","REDIRECT_URL_WITH_CODE", redirectUriWithCode)
             buildConfigField("String","AUTHORIZE_URL", authorizeUrl)
             buildConfigField("String","AUTHORIZATION_CODE_GRANT_URL", authorizationCodeGrantUrl)
+            buildConfigField("String","TEST_ACCOUNT", testAccount)
+            buildConfigField("String","TEST_ACCOUNT_PASSWORD", testAccountPassword)
         }
 
         release {
@@ -202,6 +209,9 @@ dependencies {
     androidTestImplementation(junitExtension)
     androidTestImplementation(baristaCompose)
     androidTestImplementation(platform(composeBom))
+    androidTestImplementation(uiAutomator)
+    androidTestImplementation(espressoWeb)
+    androidTestImplementation(espressoCore)
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
     // Debug libs

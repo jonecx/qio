@@ -1,6 +1,5 @@
 package com.jonecx.qio
 
-import androidx.test.espresso.web.webdriver.DriverAtoms.webClick
 import androidx.test.espresso.web.webdriver.Locator
 import com.jonecx.qio.support.BaseUiAutomator
 import org.junit.Test

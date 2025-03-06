@@ -53,8 +53,8 @@ var authorizationCodeGrantUrl: String = oauthKeys.getProperty("AUTHORIZATION_COD
 var testAccount: String = oauthKeys.getProperty("TEST_ACCOUNT", "")
 var testAccountPassword: String = oauthKeys.getProperty("TEST_ACCOUNT_PASSWORD", "")
 
-val kotlinVersion = "1.9.20"
-val kotlinCompilerExtVersion = "1.5.5"
+val kotlinVersion = "1.9.25"
+val kotlinCompilerExtVersion = "1.5.15"
 
 plugins {
     id("com.android.application")
